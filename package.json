@@ -1,0 +1,28 @@
+{
+  "name": "moneki-fullstack-assignment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "连锁餐饮经营看板 + AI 真实取数问答（全栈作业）",
+  "type": "module",
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "clean": "node scripts/clean.js",
+    "seed": "node scripts/seed.js",
+    "start": "node server/index.js",
+    "dev": "concurrently -k -n API,WEB -c blue,green \"npm run start\" \"npm run dev:web\"",
+    "dev:web": "npm run dev --workspace web",
+    "build": "npm run build --workspace web",
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
