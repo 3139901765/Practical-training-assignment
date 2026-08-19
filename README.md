@@ -14,6 +14,8 @@ npm run dev     # 同时启动 API(3001) 与前端(5173)
 
 其他命令：`npm test`（23 个测试：清洗不变量 / API 口径 / AI 数字真值）、`npm run build && npm start`（生产模式，单端口 3001 托管前端）。
 
+> 排障：若 `npm install` 因本机 npm 安全策略拦截了 esbuild 安装脚本，`npm run dev` 会提示找不到 Vite 配置，先执行 `node node_modules/esbuild/install.js` 再重试即可。
+
 ## 架构
 
 ```
