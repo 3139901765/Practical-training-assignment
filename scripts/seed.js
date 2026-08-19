@@ -18,6 +18,14 @@ export function seedDb(dbPath) {
 
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
   const db = openDb(dbPath);
+  seedFromResult(db, result);
+  const summary = db.prepare('SELECT COUNT(*) AS n, ROUND(SUM(amount), 2) AS revenue FROM sales').get();
+  db.close();
+  return { rows: Number(summary.n), revenue: Number(summary.revenue), dbPath };
+}
+
+/** 仅建表 + 灌数（不写文件），供测试复用 */
+export function seedFromResult(db, result) {
   db.exec('DROP TABLE IF EXISTS sales');
   db.exec('DROP TABLE IF EXISTS stores');
   db.exec('DROP TABLE IF EXISTS products');
@@ -67,10 +75,6 @@ export function seedDb(dbPath) {
     db.exec('ROLLBACK');
     throw e;
   }
-
-  const summary = db.prepare('SELECT COUNT(*) AS n, ROUND(SUM(amount), 2) AS revenue FROM sales').get();
-  db.close();
-  return { rows: Number(summary.n), revenue: Number(summary.revenue), dbPath };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

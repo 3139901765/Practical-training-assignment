@@ -245,8 +245,6 @@ function buildReport(result) {
   const lines = [];
   lines.push('# 数据质量报告（data/cleaned 生成依据）');
   lines.push('');
-  lines.push(`生成时间：${new Date().toISOString()}`);
-  lines.push('');
   lines.push('## 输入');
   lines.push('');
   lines.push(`- sales.csv：${stats.input.sales} 行`);

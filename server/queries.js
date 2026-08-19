@@ -22,7 +22,21 @@ export function parseDateRange(from, to) {
   return { from, to };
 }
 
+function monthPrevWindow(from, to) {
+  const lastDay = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const pad = (n) => String(n).padStart(2, '0');
+  const [fy, fm] = from.split('-').map(Number);
+  const [ty, tm] = to.split('-').map(Number);
+  const isFullMonth = fy === ty && from === `${fy}-${pad(fm)}-01` && to === `${fy}-${pad(fm)}-${pad(lastDay(fy, fm))}`;
+  if (!isFullMonth) return null;
+  const py = fm === 1 ? fy - 1 : fy;
+  const pm = fm === 1 ? 12 : fm - 1;
+  return { from: `${py}-${pad(pm)}-01`, to: `${py}-${pad(pm)}-${pad(lastDay(py, pm))}` };
+}
+
 function previousWindow(from, to) {
+  const monthPrev = monthPrevWindow(from, to);
+  if (monthPrev) return monthPrev;
   const len = (new Date(`${to}T00:00:00Z`) - new Date(`${from}T00:00:00Z`)) / DAY + 1;
   const pTo = new Date(new Date(`${from}T00:00:00Z`) - DAY).toISOString().slice(0, 10);
   const pFrom = new Date(new Date(`${from}T00:00:00Z`) - DAY * len).toISOString().slice(0, 10);
